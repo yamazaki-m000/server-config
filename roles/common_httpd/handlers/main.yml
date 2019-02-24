@@ -1,0 +1,9 @@
+
+- name: restart common_httpd service
+  service: name=httpd enabled=yes state=restarted
+
+- name: reload common_httpd service
+  service: name=httpd state=reloaded
+  
+- name: graceful common_httpd service
+  shell: /etc/init.d/httpd graceful

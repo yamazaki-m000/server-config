@@ -1,0 +1,4 @@
+host: localhost
+mysql_db_name: equipms
+mysql_user_name: equipms
+mysql_user_password: equipms

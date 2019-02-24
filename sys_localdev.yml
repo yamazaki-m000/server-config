@@ -1,0 +1,16 @@
+#
+# sys_localdev.yml
+#
+
+- hosts: localdev
+  connection: local
+  become: yes
+  roles:
+   - common
+   - common_openjdk
+   - common_gradle5
+   - common_httpd
+   - common_kernel-tcp-parameters
+   - common_docker_host
+   - sys_localdev
+

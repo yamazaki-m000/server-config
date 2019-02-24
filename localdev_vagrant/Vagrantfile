@@ -1,0 +1,27 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "bento/centos-7.4"
+  config.vm.box_url = "https://app.vagrantup.com/bento/boxes/centos-7.4"
+  config.vm.box_version = "201802.02.0"
+
+  config.vm.boot_timeout = 600
+  config.vm.provision :shell, :path => "boot.sh"
+
+  config.vm.synced_folder "../", "/home/vagrant/local_workspace", mount_options: ['dmode=755','fmode=755']
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048
+    v.cpus = 1
+  end
+
+  config.vm.define :equipms do |c1|
+    c1.vm.hostname = "equipms"
+    c1.vm.network :private_network, ip: "192.168.33.52"
+    c1.vm.network :forwarded_port, id: "ssh", guest:22, host:2223
+  end
+
+  # insecure_private_keyの置き換えを無効化
+  # https://github.com/hashicorp/vagrant/issues/9834
+  config.ssh.insert_key = false
+end

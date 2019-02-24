@@ -1,0 +1,60 @@
+#
+# MySQL5.6
+#
+- name: Install the repository of the MySQL
+  command: >
+    yum -y install http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+    creates=/etc/yum.repos.d/mysql-community.repo
+
+- name: Install the MySQL
+  yum:
+    name:
+      - mysql-server
+      - MySQL-python
+
+- name: place mysql conf file
+  template:
+    src: my.cnf
+    dest: /etc/my.cnf
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Start MySQL
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: Setup mysql database equipms
+  mysql_db:
+    name: {{ mysql_db_name }}
+    state: present
+
+- name: Add DB user
+  mysql_user:
+    name: {{ mysql_user_name }}
+    host: "%"
+    password: {{ mysql_user_password }}
+    priv: "*.*:ALL,GRANT"
+
+- name: restart mysqld
+  service:
+    name: mysqld
+    state: restarted
+
+#
+# Python Boto3
+#  https://github.com/boto/boto3
+#
+- name: Install the Python package manager (python pip)
+  yum:
+    name: python-pip
+
+- name: Install the AWS SDK for Python (boto3) by pip
+  command: >
+    pip install boto3==1.6.17
+
+- name: Install the Jinja2 by pip
+  command: >
+    pip install jinja2==2.8

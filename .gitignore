@@ -1,0 +1,3 @@
+/localdev_vagrant/.vagrant/
+*.pem
+*.retry

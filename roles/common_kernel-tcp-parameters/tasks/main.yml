@@ -1,0 +1,7 @@
+#
+# common kernel-tcp-parameters
+# 
+
+- name: setting up a kernel parameter "net.ipv4.tcp_retries2"
+  sysctl: name=net.ipv4.tcp_retries2 value=9 reload=yes sysctl_set=yes
+

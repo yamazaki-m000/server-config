@@ -1,0 +1,27 @@
+# Install OpenJDK 1.8 on AmazonLinux/CentOS
+
+- name: Create a directory in which you install OpenJDK 1.8
+  file: state=directory path={{open_jdk.java_home}} owner=root group=root recurse=yes
+
+- name: Unpack archive
+  unarchive:
+    copy: yes
+    src: "OpenJDK8_x64_Linux_jdk8u172-b11.tar.gz"
+    dest: "{{open_jdk.java_home}}"
+    owner: root
+    group: root
+    extra_opts:
+     - "--strip-components=2"
+  when:
+    - not ansible_check_mode
+
+- name: Make OpenJDK available for system 1/4
+  command: 'update-alternatives --install "/usr/bin/java" "java" "{{open_jdk.java_home}}/bin/java" {{open_jdk.java_alternatives_priority}}'
+- name: Make OpenJDK available for system 2/4
+  command: 'update-alternatives --install "/usr/bin/javac" "javac" "{{open_jdk.java_home}}/bin/javac" {{open_jdk.java_alternatives_priority}}'
+- name: Make OpenJDK available for system 3/4
+  command: 'update-alternatives --set "java" "{{open_jdk.java_home}}/bin/java"'
+- name: Make OpenJDK available for system 4/4
+  command: 'update-alternatives --set "javac" "{{open_jdk.java_home}}/bin/javac"'
+
+

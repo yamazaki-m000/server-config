@@ -1,0 +1,26 @@
+---
+  - name: install python-pip
+    yum: 
+      name: python-pip
+      state: present
+  
+  - name: install Docker
+    yum:
+      name: docker
+      state: present
+  
+  - name: "Add group 'docker'"
+    group:
+      name: docker
+      state: present
+
+  - name: "Add user '{{ local_user }}' into groups"
+    user:
+      name: "{{ local_user }}"
+      groups: docker, dockerroot
+
+  - name: stop docker service
+    service: name=docker state=stopped enabled=yes
+
+  - name: start docker service
+    service: name=docker state=started enabled=yes

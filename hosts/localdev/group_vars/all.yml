@@ -1,0 +1,11 @@
+env: localdev
+
+open_jdk:
+  java_home: /opt/openjdk8u172-b11
+  java_alternatives_priority: 180172
+
+app_username: app
+app_groupname: app
+app_deploy_target: "master"
+
+local_user: vagrant

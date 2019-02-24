@@ -1,0 +1,6 @@
+# Install OpenJDK 1.8
+
+# Check whether Oracle JDK is installed
+- name: Check whether Oracle JDK is installed
+  stat: path={{open_jdk.java_home}}/bin/java
+  register: result

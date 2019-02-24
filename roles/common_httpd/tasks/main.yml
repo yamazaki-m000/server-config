@@ -1,0 +1,48 @@
+# Installing Apache 2.4
+- name: Install Apache 2.4 on AmazonLinux
+  yum: 
+    name: httpd24
+    state: present
+    update_cache: yes
+  when:
+    - ansible_distribution == "Amazon" and ansible_service_mgr =='upstart'
+
+- name: Install Apache 2.4 on AmazonLinux
+  yum: 
+    name: httpd
+    state: present
+    update_cache: yes
+  when:
+    - ansible_distribution == "Amazon" and ansible_service_mgr =='systemd'
+
+- name: Install centos-release-SCL on CentOS 7
+  yum: 
+    name: centos-release-scl 
+    state: present 
+    update_cache: yes
+  when:
+    - ansible_distribution == "CentOS" and (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+
+- name: Install Apache 2.4 on CentOS 7
+  yum: 
+    name: httpd24 
+    state: present 
+    update_cache: yes
+  when:
+    - ansible_distribution == "CentOS" and (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")
+
+# Set httpd automatic start-up
+- name: Set httpd automatic start-up on AmazonLinux
+  service: name=httpd state=started enabled=yes
+  when:
+   - ansible_distribution == "Amazon"
+
+- name: Set httpd automatic start-up on CentOS 6
+  service: name=httpd state=started enabled=yes
+  when:
+   - ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+
+- name: Set httpd automatic start-up on CentOS 7
+  systemd: name=httpd24-httpd state=started enabled=yes
+  when:
+   - ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
